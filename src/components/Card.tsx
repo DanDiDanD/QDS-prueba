@@ -4,12 +4,6 @@ import styled from 'styled-components'
 import { palette } from '../constants/palette'
 import { type Product } from '../types/product'
 
-export const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${palette.spacer_5}
-`
-
 const CardWrapper = styled.div`
   display: grid;
   grid-template-rows: 210px 160px 80px;
@@ -112,13 +106,9 @@ export const Card = ({ img, title, price, description, item }: {
 
   if (!contextValue) throw new Error('')
 
-  const { products, setProducts } = contextValue
+  const { products, addProduct, removeProduct } = contextValue
 
   const itemIsInCart = products.some((product) => product.id === item.id)
-
-  const handleUpdateProductList = (): void => { setProducts([...products, item]) }
-
-  const handleDeleteProductList = (): void => { setProducts(products.filter((product) => product.id !== item.id)) }
 
   return (
     <CardWrapper>
@@ -135,11 +125,11 @@ export const Card = ({ img, title, price, description, item }: {
           {itemIsInCart
             ? (
               <ButtonCard
-                onClick={handleDeleteProductList}
+                onClick={() => { removeProduct(item) }}
               >Quitar carrito</ButtonCard>)
             : (
               <ButtonCard
-                onClick={handleUpdateProductList}
+                onClick={() => { addProduct(item) }}
               >Añadir al Carrito</ButtonCard>)
           }
         </CardStats>

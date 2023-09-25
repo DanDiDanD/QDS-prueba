@@ -21,5 +21,5 @@ export const palette = {
   shadows: '7px 7px 7px rgba(0, 0, 0, .15)',
   nav_height: '43px',
   margin_body: '224px',
-  content_width: `${1440 - 224 * 2}px`
+  content_width: `${1440 - 224}px`
 }

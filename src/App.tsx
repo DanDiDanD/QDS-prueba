@@ -5,8 +5,9 @@ import { fe } from './lib/fetcher.ts'
 import { useForm } from 'react-hook-form'
 import { Header } from './components/Header.tsx'
 import { Container } from './components/Container.tsx'
-import { Card, CardContainer } from './components/Card.tsx'
 import { DataProvider } from './components/DataContext.tsx'
+import { CardContainer } from './components/CardContainer.tsx'
+import styled from 'styled-components'
 
 type Filters = {
   skip: number
@@ -14,10 +15,17 @@ type Filters = {
   select?: string
 }
 
+const DivPagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`
+
 const App = (): JSX.Element => {
   const defaultValues: Partial<Filters> = {
     skip: 0,
-    limit: 3
+    limit: 8
   }
 
   const { watch, setValue } = useForm<Filters>({
@@ -31,33 +39,27 @@ const App = (): JSX.Element => {
     async (p) => await fe.get(PRODUCT_LIST_API(), p)
   )
 
-  if (isLoading) return <h1>Cargando...</h1>
-  if (!data) return <h1>Error...</h1>
-  const { products } = data
   return (
     <DataProvider>
       <Header />
       <Container>
-        <CardContainer>
-          {products.map((product) => (
-            <Card key={product.id} title={product.title} img={product.images[0]} description={product.description} price={product.price} item={product} />
-          ))}
-        </CardContainer>
-
-        <button
-          onClick={() => {
-            setValue('skip', params.skip - 1 * params.limit)
-          }}
-        >
-          atras
-        </button>
-        <button
-          onClick={() => {
-            setValue('skip', params.skip + 1 * params.limit)
-          }}
-        >
-          siguiente
-        </button>
+        <CardContainer data={data} isLoading={isLoading} />
+        <DivPagination>
+          <button
+            onClick={() => {
+              setValue('skip', params.skip - 1 * params.limit)
+            }}
+          >
+            atras
+          </button>
+          <button
+            onClick={() => {
+              setValue('skip', params.skip + 1 * params.limit)
+            }}
+          >
+            siguiente
+          </button>
+        </DivPagination>
 
       </Container>
     </DataProvider>

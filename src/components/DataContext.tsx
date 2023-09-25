@@ -1,10 +1,11 @@
-// DataContext.tsx
 import React, { createContext, useState, useEffect, type ReactNode } from 'react'
 import { type Product } from '../types/product'
 
 interface DataContextType {
   products: Product[]
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>
+  addProduct: (item: Product) => void
+  removeProduct: (item: Product) => void
+  emptyCart: () => void
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined)
@@ -23,8 +24,14 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     localStorage.setItem('products', JSON.stringify(products))
   }, [products])
 
+  const addProduct = (item: Product): void => { setProducts([...products, item]) }
+
+  const removeProduct = (item: Product): void => { setProducts(products.filter((product) => product.id !== item.id)) }
+
+  const emptyCart = (): void => { setProducts([]) }
+
   return (
-    <DataContext.Provider value={{ products, setProducts }}>
+    <DataContext.Provider value={{ products, addProduct, removeProduct, emptyCart }}>
       {children}
     </DataContext.Provider>
   )

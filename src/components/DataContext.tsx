@@ -3,10 +3,11 @@ import { type Product } from '../types/product'
 
 interface DataContextType {
   products: Product[]
+  count: number
+  totalPrice: string
   addProduct: (item: Product) => void
   removeProduct: (item: Product) => void
   emptyCart: () => void
-  count: number
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined)
@@ -31,8 +32,12 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
   const emptyCart = (): void => { setProducts([]) }
 
+  const count = products.length
+
+  const totalPrice = `$${products.reduce((acc, product) => acc + product.price, 0)}`
+
   return (
-    <DataContext.Provider value={{ products, addProduct, removeProduct, emptyCart, count: products.length }}>
+    <DataContext.Provider value={{ products, count, totalPrice, addProduct, removeProduct, emptyCart }}>
       {children}
     </DataContext.Provider>
   )

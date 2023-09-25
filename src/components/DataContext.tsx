@@ -6,6 +6,7 @@ interface DataContextType {
   addProduct: (item: Product) => void
   removeProduct: (item: Product) => void
   emptyCart: () => void
+  count: number
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined)
@@ -31,7 +32,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const emptyCart = (): void => { setProducts([]) }
 
   return (
-    <DataContext.Provider value={{ products, addProduct, removeProduct, emptyCart }}>
+    <DataContext.Provider value={{ products, addProduct, removeProduct, emptyCart, count: products.length }}>
       {children}
     </DataContext.Provider>
   )

@@ -1,5 +1,8 @@
+import { useContext } from 'react'
+import { DataContext } from './DataContext'
 import styled from 'styled-components'
 import { palette } from '../constants/palette'
+import { type Product } from '../types/product'
 
 export const CardContainer = styled.div`
   display: grid;
@@ -9,7 +12,7 @@ export const CardContainer = styled.div`
 
 const CardWrapper = styled.div`
   display: grid;
-  grid-template-rows: 210px 210px 80px;
+  grid-template-rows: 210px 160px 80px;
   grid-template-areas: "image" "text" "stats";
   border-radius: 18px;
   box-shadow: ${palette.shadows};
@@ -84,7 +87,7 @@ const CardStats = styled.div`
 
 export const ButtonCard = styled.button`
   background-color: ${palette.primary};
-  font-size: ${palette.font_size_1};
+  font-size: ${palette.font_size_2};
   padding: ${palette.spacer_1};
   padding-left: ${palette.spacer_5};
   padding-right: ${palette.spacer_5};
@@ -98,12 +101,25 @@ export const ButtonCard = styled.button`
     background-color: ${palette.secondary};
   }
 `
-export const Card = ({ img, title, price, description }: {
+export const Card = ({ img, title, price, description, item }: {
   img: string
   title: string
   price: number
   description: string
+  item: Product
 }): JSX.Element => {
+  const contextValue = useContext(DataContext)
+
+  if (!contextValue) throw new Error('')
+
+  const { products, setProducts } = contextValue
+
+  const itemIsInCart = products.some((product) => product.id === item.id)
+
+  const handleUpdateProductList = (): void => { setProducts([...products, item]) }
+
+  const handleDeleteProductList = (): void => { setProducts(products.filter((product) => product.id !== item.id)) }
+
   return (
     <CardWrapper>
       <CardImage background={img} />
@@ -116,7 +132,16 @@ export const Card = ({ img, title, price, description }: {
       </CardTextWrapper>
       <CardStatWrapper>
         <CardStats>
-          <ButtonCard>website</ButtonCard>
+          {itemIsInCart
+            ? (
+              <ButtonCard
+                onClick={handleDeleteProductList}
+              >Quitar carrito</ButtonCard>)
+            : (
+              <ButtonCard
+                onClick={handleUpdateProductList}
+              >Añadir al Carrito</ButtonCard>)
+          }
         </CardStats>
       </CardStatWrapper>
     </CardWrapper>

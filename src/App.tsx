@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { Header } from './components/Header.tsx'
 import { Container } from './components/Container.tsx'
 import { Card, CardContainer } from './components/Card.tsx'
+import { DataProvider } from './components/DataContext.tsx'
 
 type Filters = {
   skip: number
@@ -34,12 +35,12 @@ const App = (): JSX.Element => {
   if (!data) return <h1>Error...</h1>
   const { products } = data
   return (
-    <>
+    <DataProvider>
       <Header />
       <Container>
         <CardContainer>
           {products.map((product) => (
-            <Card key={product.id} title={product.title} img={product.images[0]} description={product.description} price={product.price} />
+            <Card key={product.id} title={product.title} img={product.images[0]} description={product.description} price={product.price} item={product} />
           ))}
         </CardContainer>
 
@@ -59,7 +60,7 @@ const App = (): JSX.Element => {
         </button>
 
       </Container>
-    </>
+    </DataProvider>
   )
 }
 

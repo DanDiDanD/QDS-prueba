@@ -3,6 +3,9 @@ import { type ProductList } from './types/product.ts'
 import { PRODUCT_LIST_API } from './lib/apis.ts'
 import { fe } from './lib/fetcher.ts'
 import { useForm } from 'react-hook-form'
+import { Header } from './components/Header.tsx'
+import { Container } from './components/Container.tsx'
+import { Card, CardContainer } from './components/Card.tsx'
 
 type Filters = {
   skip: number
@@ -13,7 +16,7 @@ type Filters = {
 const App = (): JSX.Element => {
   const defaultValues: Partial<Filters> = {
     skip: 0,
-    limit: 5
+    limit: 3
   }
 
   const { watch, setValue } = useForm<Filters>({
@@ -32,27 +35,30 @@ const App = (): JSX.Element => {
   const { products } = data
   return (
     <>
-      {products.map((product) => (
-        <div key={product.id}>
-          <h2>{product.title}</h2>
-          <p>{product.description}</p>
-          <p>{product.price}</p>
-        </div>
-      ))}
-      <button
-        onClick={() => {
-          setValue('skip', params.skip - 1 * params.limit)
-        }}
-      >
-        atras
-      </button>
-      <button
-        onClick={() => {
-          setValue('skip', params.skip + 1 * params.limit)
-        }}
-      >
-        siguiente
-      </button>
+      <Header />
+      <Container>
+        <CardContainer>
+          {products.map((product) => (
+            <Card key={product.id} title={product.title} img={product.images[0]} description={product.description} price={product.price} />
+          ))}
+        </CardContainer>
+
+        <button
+          onClick={() => {
+            setValue('skip', params.skip - 1 * params.limit)
+          }}
+        >
+          atras
+        </button>
+        <button
+          onClick={() => {
+            setValue('skip', params.skip + 1 * params.limit)
+          }}
+        >
+          siguiente
+        </button>
+
+      </Container>
     </>
   )
 }

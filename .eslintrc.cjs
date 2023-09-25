@@ -31,6 +31,6 @@ module.exports = {
     "rules": {
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/consistent-type-definitions": "off",
-
+        '@typescript-eslint/strict-boolean-expressions': 'off',
     }
 }

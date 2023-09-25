@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { palette } from '../constants/palette'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { DataContext } from './DataContext'
+import { CartDropdown } from './Dropdown'
 
 const HeaderContainer = styled.header`
   background-color: ${palette.secondary};
@@ -23,6 +24,7 @@ const Nav = styled.nav`
 `
 
 const NavDiv = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   height: 32px;
@@ -42,6 +44,9 @@ const CartButton = styled.button`
 
 export const Header = (): JSX.Element => {
   const contextValue = useContext(DataContext)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleDropdown = (): void => { setIsOpen(!isOpen) }
 
   if (!contextValue) throw new Error('')
 
@@ -54,7 +59,7 @@ export const Header = (): JSX.Element => {
           TIENDA
         </NavDiv>
         <NavDiv>
-          <CartButton onClick={() => { console.log('hola') }}>
+          <CartButton onClick={toggleDropdown}>
             {count} ({totalPrice}) {' '}
             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-shopping-cart" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -64,6 +69,7 @@ export const Header = (): JSX.Element => {
               <path d="M6 5l14 1l-1 7h-13"></path>
             </svg>
           </CartButton>
+          {isOpen && <CartDropdown />}
         </NavDiv>
       </Nav>
     </HeaderContainer>

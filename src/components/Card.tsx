@@ -80,7 +80,7 @@ const CardStats = styled.div`
 `
 
 export const ButtonCard = styled.button<{ variant: string }>`
-  background-color: ${({ variant }) => variant === 'primary' ? palette.primary : palette.warning};
+  background-color: ${({ variant }) => variant};
   font-size: ${palette.font_size_3};
   padding: ${palette.spacer_1};
   padding-left: ${palette.spacer_5};
@@ -125,12 +125,12 @@ export const Card = ({ img, title, price, description, item }: {
           {itemIsInCart
             ? (
               <ButtonCard
-                variant="warning"
+                variant={palette.warning}
                 onClick={() => { removeProduct(item) }}
               >Quitar carrito</ButtonCard>)
             : (
               <ButtonCard
-                variant="primary"
+                variant={palette.primary}
                 onClick={() => { addProduct(item) }}
               >Añadir al Carrito</ButtonCard>)
           }

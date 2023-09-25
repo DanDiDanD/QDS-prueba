@@ -39,6 +39,8 @@ const App = (): JSX.Element => {
     async (p) => await fe.get(PRODUCT_LIST_API(), p)
   )
 
+  const total = data?.total ?? 0
+
   return (
     <DataProvider>
       <Header />
@@ -46,6 +48,7 @@ const App = (): JSX.Element => {
         <CardContainer data={data} isLoading={isLoading} />
         <DivPagination>
           <button
+            disabled={params.skip === 0}
             onClick={() => {
               setValue('skip', params.skip - 1 * params.limit)
             }}
@@ -53,6 +56,7 @@ const App = (): JSX.Element => {
             atras
           </button>
           <button
+            disabled={params.skip + params.limit > total}
             onClick={() => {
               setValue('skip', params.skip + 1 * params.limit)
             }}

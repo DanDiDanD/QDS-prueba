@@ -1,14 +1,19 @@
+import { type ListProps } from './listProps'
+
+export type ProductList = {
+  products: Product[]
+} & ListProps
+
 export type Product = {
   id: number
   title: string
-  price: number
   description: string
+  price: number
+  discountPercentage: number
+  rating: number
+  stock: number
+  brand: string
   category: string
-  image: string
-  rating: Rating
-}
-
-export type Rating = {
-  rate: number
-  count: number
+  thumbnail: string
+  images: string[]
 }

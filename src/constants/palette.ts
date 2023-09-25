@@ -1,4 +1,6 @@
-export const palette = {
+import { type Palette } from '../types/props'
+
+export const palette: Palette = {
   gray_0: '#000000',
   gray_1: '#222222',
   gray_2: '#dddddd',

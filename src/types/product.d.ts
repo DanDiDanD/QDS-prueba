@@ -1,4 +1,4 @@
-import { type ListProps } from './listProps'
+import { type ListProps } from './props'
 
 export type ProductList = {
   products: Product[]

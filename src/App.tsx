@@ -4,8 +4,14 @@ import { PRODUCT_LIST_API } from './lib/apis.ts'
 import { fe } from './lib/fetcher.ts'
 
 const App = (): JSX.Element => {
-  const { data, isLoading } = useSWR<ProductList>(PRODUCT_LIST_API(),
-    fe.get
+  const params = {
+    skip: 0,
+    limit: 5,
+    select: ''
+  }
+
+  const { data, isLoading } = useSWR<ProductList>(params,
+    async () => await fe.get(PRODUCT_LIST_API(), params)
   )
 
   if (isLoading) return <h1>Cargando...</h1>
